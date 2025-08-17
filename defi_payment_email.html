@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation Required - DeFi Wallet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 40px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+        
+        .alert-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .alert-box h3 {
+            color: #856404;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .alert-box p {
+            color: #856404;
+            font-size: 14px;
+        }
+        
+        .details-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 1px solid #e9ecef;
+        }
+        
+        .details-section h3 {
+            color: #495057;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+            color: #495057;
+            font-size: 14px;
+        }
+        
+        .requirements-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .requirements-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 14px;
+            color: #495057;
+        }
+        
+        .requirements-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .steps-section {
+            background: #e8f5e8;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 1px solid #c3e6c3;
+        }
+        
+        .steps-section h3 {
+            color: #155724;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .step-number {
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .security-notice {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .security-notice h3 {
+            color: #721c24;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .security-notice h3:before {
+            content: "🔒";
+            margin-right: 8px;
+        }
+        
+        .security-notice ul {
+            list-style: none;
+            margin: 10px 0;
+        }
+        
+        .security-notice li {
+            padding: 4px 0;
+            font-size: 14px;
+            color: #721c24;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .security-notice li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px 0;
+            transition: transform 0.2s;
+            font-size: 16px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .footer h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .footer p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        
+        .contact-info {
+            margin-top: 20px;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 640px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header, .content, .footer {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Payment Confirmation Required</h1>
+            <p>DeFi Wallet - Transaction Verification</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="greeting">
+                Dear <strong>[Trader Name/Username]</strong>,
+            </div>
+
+            <p>We hope this message finds you well.</p>
+
+            <div class="alert-box">
+                <h3>⚠️ Action Required</h3>
+                <p>Our system has flagged your account for pending payment verification related to recent trading activities. To process your advancement request and release the pending funds, we require confirmation of your initial payment.</p>
+            </div>
+
+            <!-- Account Details -->
+            <div class="details-section">
+                <h3>Account Details</h3>
+                <div class="detail-item">
+                    <span class="detail-label">Account ID:</span>
+                    <span class="detail-value">[Account Number]</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Pending Amount:</span>
+                    <span class="detail-value">[Amount] [Currency]</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Transaction Reference:</span>
+                    <span class="detail-value">[Reference Number]</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Date Initiated:</span>
+                    <span class="detail-value">[Date]</span>
+                </div>
+            </div>
+
+            <!-- Required Documentation -->
+            <div class="details-section">
+                <h3>Required Documentation</h3>
+                <p style="margin-bottom: 15px;">Please provide proof of your initial payment by submitting one of the following:</p>
+                <ul class="requirements-list">
+                    <li>Original payment receipt/slip</li>
+                    <li>Bank transfer confirmation</li>
+                    <li>Cryptocurrency transaction hash and blockchain confirmation</li>
+                    <li>Payment gateway confirmation email</li>
+                </ul>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="steps-section">
+                <h3>Next Steps</h3>
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div>Reply to this email with your payment proof attached</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div>Ensure all transaction details are clearly visible</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div>Include your account ID in your response</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div>Our verification team will process your submission within 24-48 hours</div>
+                </div>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="security-notice">
+                <h3>Important Security Notice</h3>
+                <ul>
+                    <li>Never share your private keys or seed phrases</li>
+                    <li>Verify this email came from our official domain: [official-domain.com]</li>
+                    <li>Contact our support team directly if you have any doubts about this communication</li>
+                </ul>
+            </div>
+
+            <p style="margin: 25px 0;">Once we receive and verify your payment proof, we will immediately process your advancement and update your account status.</p>
+
+            <center>
+                <a href="mailto:[support-email]" class="cta-button">Contact Support Team</a>
+            </center>
+
+            <p style="margin-top: 25px; font-size: 14px; color: #6c757d;">If you have any questions or need assistance, please contact our support team at <strong>[support email]</strong> or through your account dashboard.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h4>Thank you for your cooperation</h4>
+            <p><strong>[Name]</strong><br>
+            Customer Verification Team<br>
+            <strong>[DeFi Wallet Name]</strong></p>
+            
+            <div class="contact-info">
+                Email: [support-email] | Website: [website-url]<br>
+                This is an automated message. Please do not reply directly to this email.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
